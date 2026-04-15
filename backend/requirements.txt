@@ -1,0 +1,8 @@
+streamlit
+pillow
+numpy
+pandas
+flask
+flask-cors
+transformers
+torch
