@@ -1,6 +1,8 @@
+gunicorn
+pillow
+numpy
+pandas
 flask
 flask-cors
-pillow
 transformers
-torch
-gunicorn
+torch==2.5.1+cpu --extra-index-url https://pytorch.org
