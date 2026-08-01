@@ -40,6 +40,27 @@ npm run dev
 ```
 The app will be available at `http://localhost:5173`.
 
+### 4. Deploying on Vercel
+This repository is split into a Vite frontend and a Flask backend. Vercel can host the frontend directly, but the Flask API should run on a separate host unless you convert it to a serverless function.
+
+For the Vercel deployment:
+1. Set the project root to `frontend/` in Vercel, or use the repo-level `vercel.json`.
+2. Add an environment variable named `VITE_API_BASE_URL` that points to your deployed backend, for example `https://your-backend.example.com`.
+3. Deploy the frontend build. The app will call the configured API instead of `localhost`.
+
+If you want the full stack on Vercel, the backend must be refactored into a Vercel-compatible serverless API first.
+
+### 5. Deploying the Backend on Render
+The simplest backend deployment path is Render.
+
+Use these settings for a new Web Service:
+1. Root Directory: `backend`
+2. Build Command: `pip install -r requirements.txt`
+3. Start Command: `gunicorn server:app --bind 0.0.0.0:$PORT`
+4. Add any needed environment variables in the Render dashboard
+
+After deployment, set `VITE_API_BASE_URL` in Vercel to the backend URL Render gives you.
+
 ## Project Structure
 - `app.py`: Original Streamlit version (kept for reference).
 - `server.py`: New Flask backend API.

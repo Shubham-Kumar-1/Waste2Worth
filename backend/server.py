@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 from PIL import Image
 import io
-from backend.classify import classify_image
+from classify import classify_image
 
 app = Flask(__name__)
 CORS(app) # Enable CORS for frontend integration
