@@ -5,4 +5,4 @@ pandas
 flask
 flask-cors
 transformers
-torch==2.5.1+cpu --extra-index-url https://pytorch.org
+torch
