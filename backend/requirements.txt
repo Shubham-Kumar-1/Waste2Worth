@@ -1,7 +1,6 @@
-pillow
-numpy
-pandas
 flask
 flask-cors
+pillow
 transformers
-https://pytorch.org
+torch
+gunicorn
