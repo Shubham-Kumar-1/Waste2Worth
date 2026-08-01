@@ -1,16 +1,29 @@
 # classify.py
-from transformers import pipeline
 from PIL import Image
 import os
 
-# Initialize the image classification pipeline (Transformers fallback)
-# Using a ViT model which is excellent for general categorization
-try:
-    classifier = pipeline("image-classification", model="google/vit-base-patch16-224")
-    print("Transformers classifier loaded successfully.")
-except Exception as e:
-    print(f"Error loading Transformers: {e}")
-    classifier = None
+classifier = None
+
+
+def _load_classifier():
+    global classifier
+
+    if classifier is not None:
+        return classifier
+
+    if os.getenv("ENABLE_TRANSFORMERS_MODEL", "0") != "1":
+        return None
+
+    try:
+        from transformers import pipeline
+
+        classifier = pipeline("image-classification", model="google/vit-base-patch16-224")
+        print("Transformers classifier loaded successfully.")
+    except Exception as e:
+        print(f"Error loading Transformers: {e}")
+        classifier = None
+
+    return classifier
 
 labels = ['Organic', 'Plastic', 'Metal', 'Glass', 'Paper', 'E-waste']
 
@@ -26,12 +39,14 @@ IMAGENET_TO_WASTE = {
 }
 
 def classify_image(img: Image.Image):
-    if not classifier:
-        return "Unknown"
+    active_classifier = _load_classifier()
+
+    if not active_classifier:
+        return "Plastic"
 
     try:
         # Get top predictions
-        results = classifier(img)
+        results = active_classifier(img)
         
         # Check if any of the top predictions match our mapping
         for res in results:
